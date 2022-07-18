@@ -17,13 +17,17 @@ public class JpaStudyApplication {
 
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        Member member = new Member();
-
-        member.setId(1L);
-        member.setName("Hello");
-
-        em.persist(member);
-        tx.commit();
+        try {
+            Member findMember = em.find(Member.class, 1L);
+            System.out.println(findMember.toString());
+            findMember.setName("HelloJPA");
+            System.out.println(findMember);
+            em.persist(findMember);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
+        
         em.close();
         emf.close();
     }
